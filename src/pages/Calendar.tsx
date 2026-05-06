@@ -5,11 +5,14 @@ import { useProveedorForm } from "../components/proveedores/useProveedorForm";
 
 export default function ProveedoresForm() {
   const {
+    form,
     loading,
     error,
     success,
+    handleChange,
     handleSubmit,
   } = useProveedorForm();
+
   return (
     <div className="p-6 space-y-6">
       <div className="bg-white rounded-lg shadow-md p-6">
@@ -18,10 +21,12 @@ export default function ProveedoresForm() {
           PROVEEDORES
         </h2>
 
-
         <form onSubmit={handleSubmit}>
 
-          <ProveedorFields />
+          <ProveedorFields
+            form={form}
+            onChange={handleChange}
+          />
 
           <ProveedorFooter
             loading={loading}

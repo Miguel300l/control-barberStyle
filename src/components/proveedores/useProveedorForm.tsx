@@ -1,19 +1,11 @@
 import { useState } from "react";
+import api from "../../axios/axios";
 import { ProveedorForm } from "../proveedores/types";
 
 const INITIAL: ProveedorForm = {
-    codigoProveedor: "",
-    nombreEmpresa: "",
-    ruc: "",
-    contacto: "",
-    telefono: "",
+    nombre: "",
     correo: "",
-    direccion: "",
-    ciudad: "",
-    pais: "",
-    tipoProveedor: "",
-    terminosPago: "",
-    observacion: "",
+    telefono: "",
 };
 
 export function useProveedorForm() {
@@ -22,8 +14,16 @@ export function useProveedorForm() {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<any>) => {
-        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const { name, value } = e.target;
+
+        setForm((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+
         setError(null);
         setSuccess(false);
     };
@@ -35,18 +35,18 @@ export function useProveedorForm() {
         setSuccess(false);
 
         try {
-            const res = await fetch("/api/proveedores", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
-            });
+            const res = await api.post("/api/proveedores", form);
 
-            if (!res.ok) throw new Error("Error al guardar");
+            console.log("Proveedor creado:", res.data);
 
             setSuccess(true);
             setForm(INITIAL);
         } catch (err: any) {
-            setError(err.message);
+            console.error(err);
+            setError(
+                err?.response?.data?.message ||
+                "Error al guardar proveedor"
+            );
         } finally {
             setLoading(false);
         }

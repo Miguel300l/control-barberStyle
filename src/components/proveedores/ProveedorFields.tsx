@@ -1,85 +1,53 @@
 import Input from "../../components/form/input/InputField";
 import Label from "../../components/form/Label";
-import Select from "../../components/form/Select";
 
-
-export default function ProveedorFields() {
-    const options = [
-        { value: "marketing", label: "Marketing" },
-        { value: "template", label: "Template" },
-        { value: "development", label: "Development" },
-    ];
-    const handleSelectChange = (value: string) => {
-        console.log("Selected value:", value);
+interface Props {
+    form: {
+        nombre: string;
+        correo: string;
+        telefono: string;
     };
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function ProveedorFields({ form, onChange }: Props) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-            <div>
-                <Label>Código Proveedor</Label>
-                <Input
-                    name="codigoProveedor"
-                    placeholder="Código"
-                />
-            </div>
-
+            {/* NOMBRE */}
             <div>
                 <Label>Nombre Empresa</Label>
                 <Input
-                    name="nombreEmpresa"
+                    name="nombre"
+                    value={form.nombre}
+                    onChange={onChange}
                     placeholder="Nombre empresa"
                 />
             </div>
 
-            <div>
-                <Label>Contacto</Label>
-                <Input
-                    name="contacto"
-
-                    placeholder="Persona de contacto"
-                />
-            </div>
-            <div>
-                <Label htmlFor="input">Input</Label>
-                <Input type="text" id="input" />
-            </div>
-            <div>
-                <Label>Teléfono</Label>
-                <Input
-                    name="telefono"
-
-                    placeholder="Teléfono"
-                />
-            </div>
-
+            {/* CORREO */}
             <div>
                 <Label>Correo</Label>
                 <Input
                     name="correo"
                     type="email"
-
+                    value={form.correo}
+                    onChange={onChange}
                     placeholder="correo@email.com"
                 />
             </div>
 
+            {/* TELEFONO */}
             <div>
-                <Label>Ciudad</Label>
+                <Label>Teléfono</Label>
                 <Input
-                    name="ciudad"
-                    placeholder="Ciudad"
+                    name="telefono"
+                    value={form.telefono}
+                    onChange={onChange}
+                    placeholder="Teléfono"
                 />
             </div>
 
-
-            <div>
-                <Label>Select Input</Label>
-                <Select
-                    options={options}
-                    placeholder="Select an option"
-                    onChange={handleSelectChange}
-                    className="dark:bg-dark-900"
-                />
-            </div>
         </div>
     );
 }
