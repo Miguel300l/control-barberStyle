@@ -7,8 +7,6 @@ export default function ProveedoresForm() {
   const {
     form,
     loading,
-    error,
-    success,
     handleChange,
     handleSubmit,
   } = useProveedorForm();
@@ -30,14 +28,12 @@ export default function ProveedoresForm() {
 
           <ProveedorFooter
             loading={loading}
-            success={success}
-            error={error}
           />
 
         </form>
       </div>
 
-      <div style={{ marginTop: "24px" }}>
+      <div className="mt-6">
         <InformeLevante />
       </div>
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../../axios/axios";
 import { ProveedorForm } from "../proveedores/types";
+import Swal from "sweetalert2";
 
 const INITIAL: ProveedorForm = {
     nombre: "",
@@ -9,45 +10,71 @@ const INITIAL: ProveedorForm = {
 };
 
 export function useProveedorForm() {
-    const [form, setForm] = useState<ProveedorForm>(INITIAL);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState(false);
+
+    const [form, setForm] =
+        useState<ProveedorForm>(INITIAL);
+
+    const [loading, setLoading] =
+        useState(false);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
+
         const { name, value } = e.target;
 
         setForm((prev) => ({
             ...prev,
             [name]: value,
         }));
-
-        setError(null);
-        setSuccess(false);
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (
+        e: React.FormEvent
+    ) => {
+
         e.preventDefault();
+
         setLoading(true);
-        setError(null);
-        setSuccess(false);
 
         try {
-            const res = await api.post("/api/proveedores", form);
 
-            console.log("Proveedor creado:", res.data);
-
-            setSuccess(true);
-            setForm(INITIAL);
-        } catch (err: any) {
-            console.error(err);
-            setError(
-                err?.response?.data?.message ||
-                "Error al guardar proveedor"
+            const res = await api.post(
+                "/api/proveedores",
+                form
             );
+
+            console.log(
+                "Proveedor creado:",
+                res.data
+            );
+
+            Swal.fire({
+                icon: "success",
+                title: "Proveedor creado",
+                text: "El proveedor fue guardado correctamente",
+                confirmButtonColor: "#6366f1",
+            });
+
+            setForm(INITIAL);
+
+        } catch (err: any) {
+
+            console.error(err);
+
+            const message =
+                err?.response?.data?.message ||
+                "Error al guardar proveedor";
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: message,
+                confirmButtonColor: "#ef4444",
+            });
+
         } finally {
+
             setLoading(false);
         }
     };
@@ -55,8 +82,6 @@ export function useProveedorForm() {
     return {
         form,
         loading,
-        error,
-        success,
         handleChange,
         handleSubmit,
     };

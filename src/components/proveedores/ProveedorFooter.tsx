@@ -1,9 +1,9 @@
 interface Props {
     loading: boolean;
-    success: boolean;
-    error: string | null;
 }
-export default function ProveedorFooter({ loading, success, error }: Props) {
+
+export default function ProveedorFooter({ loading }: Props) {
+
     return (
         <div className="flex flex-col items-center justify-center gap-2 mt-6">
 
@@ -15,17 +15,6 @@ export default function ProveedorFooter({ loading, success, error }: Props) {
                 {loading ? "Guardando..." : "Guardar"}
             </button>
 
-            {success && (
-                <span className="text-green-600 font-medium">
-                    ✓ Guardado correctamente
-                </span>
-            )}
-
-            {error && (
-                <span className="text-red-600 font-medium">
-                    ✕ {error}
-                </span>
-            )}
         </div>
     );
 }

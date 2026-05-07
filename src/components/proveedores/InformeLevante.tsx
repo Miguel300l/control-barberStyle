@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import api from "../../axios/axios";
 import * as XLSX from "xlsx";
 
 interface Proveedor {
@@ -18,17 +19,38 @@ function exportToXLSX(data: Proveedor[]) {
   XLSX.writeFile(wb, "proveedores.xlsx");
 }
 
-export default function InformeLevante({ data = [] }: { data?: Proveedor[] }) {
+export default function InformeLevante() {
+  const [data, setData] = useState<Proveedor[]>([]);
+
   const [search, setSearch] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState<keyof Proveedor | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
+  useEffect(() => {
+    const obtenerProveedores = async () => {
+      try {
+        const response = await api.get("/api/proveedores");
+
+        console.log(response.data);
+
+        setData(response.data);
+      } catch (error) {
+        console.error("Error al obtener proveedores:", error);
+      }
+    };
+
+    obtenerProveedores();
+  }, []);
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
+
     return data.filter((row) =>
-      Object.values(row).some((v) => String(v).toLowerCase().includes(q)),
+      Object.values(row).some((v) =>
+        String(v).toLowerCase().includes(q)
+      )
     );
   }, [data, search]);
 
@@ -65,7 +87,8 @@ export default function InformeLevante({ data = [] }: { data?: Proveedor[] }) {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div font-semibold text-left mb-4>
+
+        <div className="font-semibold text-left mb-4 px-5 pt-5">
           Listado Proveedores
         </div>
 
@@ -121,13 +144,19 @@ export default function InformeLevante({ data = [] }: { data?: Proveedor[] }) {
             <tbody>
               {paginated.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="text-center py-10 text-gray-400">
+                  <td
+                    colSpan={3}
+                    className="text-center py-10 text-gray-400"
+                  >
                     No se encontraron resultados
                   </td>
                 </tr>
               ) : (
                 paginated.map((row, i) => (
-                  <tr key={i} className="border-b hover:bg-blue-50">
+                  <tr
+                    key={i}
+                    className="border-b hover:bg-blue-50"
+                  >
                     <td className="px-5 py-3">{row.nombre}</td>
                     <td className="px-5 py-3">{row.correo}</td>
                     <td className="px-5 py-3">{row.telefono}</td>
@@ -147,7 +176,9 @@ export default function InformeLevante({ data = [] }: { data?: Proveedor[] }) {
             ««
           </button>
           <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            onClick={() =>
+              setCurrentPage((p) => Math.max(1, p - 1))
+            }
             className="px-2 py-1 border rounded"
           >
             ‹
@@ -158,7 +189,11 @@ export default function InformeLevante({ data = [] }: { data?: Proveedor[] }) {
           </span>
 
           <button
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            onClick={() =>
+              setCurrentPage((p) =>
+                Math.min(totalPages, p + 1)
+              )
+            }
             className="px-2 py-1 border rounded"
           >
             ›
@@ -181,7 +216,9 @@ export default function InformeLevante({ data = [] }: { data?: Proveedor[] }) {
             className="border rounded px-2 py-1 text-sm"
           >
             {[5, 10, 20, 50].map((n) => (
-              <option key={n}>{n}</option>
+              <option key={n} value={n}>
+                {n}
+              </option>
             ))}
           </select>
         </div>

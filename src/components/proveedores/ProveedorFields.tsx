@@ -7,10 +7,17 @@ interface Props {
         correo: string;
         telefono: string;
     };
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+
+    onChange: (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => void;
 }
 
-export default function ProveedorFields({ form, onChange }: Props) {
+export default function ProveedorFields({
+    form,
+    onChange,
+}: Props) {
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
@@ -18,10 +25,12 @@ export default function ProveedorFields({ form, onChange }: Props) {
             <div>
                 <Label>Nombre Empresa</Label>
                 <Input
+                    type="text"
                     name="nombre"
                     value={form.nombre}
                     onChange={onChange}
                     placeholder="Nombre empresa"
+                    required
                 />
             </div>
 
@@ -29,11 +38,12 @@ export default function ProveedorFields({ form, onChange }: Props) {
             <div>
                 <Label>Correo</Label>
                 <Input
-                    name="correo"
                     type="email"
+                    name="correo"
                     value={form.correo}
                     onChange={onChange}
                     placeholder="correo@email.com"
+                    required
                 />
             </div>
 
@@ -41,10 +51,12 @@ export default function ProveedorFields({ form, onChange }: Props) {
             <div>
                 <Label>Teléfono</Label>
                 <Input
+                    type="number"
                     name="telefono"
                     value={form.telefono}
                     onChange={onChange}
                     placeholder="Teléfono"
+                    required
                 />
             </div>
 
