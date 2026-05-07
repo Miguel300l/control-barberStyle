@@ -8,6 +8,10 @@ interface Proveedor {
   telefono: string;
 }
 
+interface InformeLevanteProps {
+  refresh: number;
+}
+
 function exportToXLSX(data: Proveedor[]) {
   const headers = ["Nombre", "Correo", "Teléfono"];
 
@@ -19,7 +23,7 @@ function exportToXLSX(data: Proveedor[]) {
   XLSX.writeFile(wb, "proveedores.xlsx");
 }
 
-export default function InformeLevante() {
+export default function InformeLevante({ refresh }: InformeLevanteProps) {
   const [data, setData] = useState<Proveedor[]>([]);
 
   const [search, setSearch] = useState("");
@@ -42,15 +46,13 @@ export default function InformeLevante() {
     };
 
     obtenerProveedores();
-  }, []);
+  }, [refresh]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
 
     return data.filter((row) =>
-      Object.values(row).some((v) =>
-        String(v).toLowerCase().includes(q)
-      )
+      Object.values(row).some((v) => String(v).toLowerCase().includes(q)),
     );
   }, [data, search]);
 
@@ -87,10 +89,7 @@ export default function InformeLevante() {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="bg-white rounded-lg shadow overflow-hidden">
-
-        <div className="font-semibold text-left mb-4 px-5 pt-5">
-          Listado Proveedores
-        </div>
+        <h2 className="font-semibold text-left mb-4">LISTADO PROVEEDORES</h2>
 
         <div className="flex items-center gap-2 px-5 py-3 border-b">
           <button
@@ -110,7 +109,7 @@ export default function InformeLevante() {
           <div className="flex-1" />
 
           <input
-            className="border px-3 py-1.5 rounded-md text-sm w-[200px] focus:ring-2 focus:ring-indigo-200"
+            className="border px-3 py-1.5 rounded-md text-sm w-[200px] font-[Outfit] text-gray-700 dark:text-gray-400 focus:ring-2 focus:ring-indigo-200"
             placeholder="Buscar..."
             value={search}
             onChange={(e) => {
@@ -122,7 +121,7 @@ export default function InformeLevante() {
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-sm font-[Outfit]">
+          <table className="w-full border-collapse text-sm font-[Outfit] text-gray-700 dark:text-gray-400">
             <thead className="bg-gray-100 border-b">
               <tr>
                 {[
@@ -133,7 +132,7 @@ export default function InformeLevante() {
                   <th
                     key={key}
                     onClick={() => handleSort(key as keyof Proveedor)}
-                    className="px-5 py-3 text-left cursor-pointer hover:text-gray-900"
+                    className="px-5 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400 cursor-pointer hover:text-gray-900"
                   >
                     {label}
                   </th>
@@ -144,22 +143,22 @@ export default function InformeLevante() {
             <tbody>
               {paginated.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={3}
-                    className="text-center py-10 text-gray-400"
-                  >
+                  <td colSpan={3} className="text-center py-10 text-gray-400">
                     No se encontraron resultados
                   </td>
                 </tr>
               ) : (
                 paginated.map((row, i) => (
-                  <tr
-                    key={i}
-                    className="border-b hover:bg-blue-50"
-                  >
-                    <td className="px-5 py-3">{row.nombre}</td>
-                    <td className="px-5 py-3">{row.correo}</td>
-                    <td className="px-5 py-3">{row.telefono}</td>
+                  <tr key={i} className="border-b hover:bg-blue-50">
+                    <td className="px-5 py-3 text-sm text-gray-700 dark:text-gray-400">
+                      {row.nombre}
+                    </td>
+                    <td className="px-5 py-3 text-sm text-gray-700 dark:text-gray-400">
+                      {row.correo}
+                    </td>
+                    <td className="px-5 py-3 text-sm text-gray-700 dark:text-gray-400">
+                      {row.telefono}
+                    </td>
                   </tr>
                 ))
               )}
@@ -176,9 +175,7 @@ export default function InformeLevante() {
             ««
           </button>
           <button
-            onClick={() =>
-              setCurrentPage((p) => Math.max(1, p - 1))
-            }
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             className="px-2 py-1 border rounded"
           >
             ‹
@@ -189,11 +186,7 @@ export default function InformeLevante() {
           </span>
 
           <button
-            onClick={() =>
-              setCurrentPage((p) =>
-                Math.min(totalPages, p + 1)
-              )
-            }
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             className="px-2 py-1 border rounded"
           >
             ›
