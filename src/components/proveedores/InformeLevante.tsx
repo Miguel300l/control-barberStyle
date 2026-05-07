@@ -89,9 +89,7 @@ export default function InformeLevante({ refresh }: InformeLevanteProps) {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="font-semibold text-left mb-4 px-5 pt-5">
-          Listado Proveedores
-        </div>
+        <h2 className="font-semibold text-left mb-4">LISTADO PROVEEDORES</h2>
 
         <div className="flex items-center gap-2 px-5 py-3 border-b">
           <button
@@ -111,7 +109,7 @@ export default function InformeLevante({ refresh }: InformeLevanteProps) {
           <div className="flex-1" />
 
           <input
-            className="border px-3 py-1.5 rounded-md text-sm w-[200px] focus:ring-2 focus:ring-indigo-200"
+            className="border px-3 py-1.5 rounded-md text-sm w-[200px] font-[Outfit] text-gray-700 dark:text-gray-400 focus:ring-2 focus:ring-indigo-200"
             placeholder="Buscar..."
             value={search}
             onChange={(e) => {
@@ -123,7 +121,7 @@ export default function InformeLevante({ refresh }: InformeLevanteProps) {
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-sm font-[Outfit]">
+          <table className="w-full border-collapse text-sm font-[Outfit] text-gray-700 dark:text-gray-400">
             <thead className="bg-gray-100 border-b">
               <tr>
                 {[
@@ -134,7 +132,7 @@ export default function InformeLevante({ refresh }: InformeLevanteProps) {
                   <th
                     key={key}
                     onClick={() => handleSort(key as keyof Proveedor)}
-                    className="px-5 py-3 text-left cursor-pointer hover:text-gray-900"
+                    className="px-5 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400 cursor-pointer hover:text-gray-900"
                   >
                     {label}
                   </th>
@@ -152,9 +150,15 @@ export default function InformeLevante({ refresh }: InformeLevanteProps) {
               ) : (
                 paginated.map((row, i) => (
                   <tr key={i} className="border-b hover:bg-blue-50">
-                    <td className="px-5 py-3">{row.nombre}</td>
-                    <td className="px-5 py-3">{row.correo}</td>
-                    <td className="px-5 py-3">{row.telefono}</td>
+                    <td className="px-5 py-3 text-sm text-gray-700 dark:text-gray-400">
+                      {row.nombre}
+                    </td>
+                    <td className="px-5 py-3 text-sm text-gray-700 dark:text-gray-400">
+                      {row.correo}
+                    </td>
+                    <td className="px-5 py-3 text-sm text-gray-700 dark:text-gray-400">
+                      {row.telefono}
+                    </td>
                   </tr>
                 ))
               )}
