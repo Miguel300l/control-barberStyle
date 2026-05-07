@@ -4,85 +4,78 @@ import { ProveedorForm } from "../proveedores/types";
 import Swal from "sweetalert2";
 
 const INITIAL: ProveedorForm = {
-    nombre: "",
-    correo: "",
-    telefono: "",
+  nombre: "",
+  correo: "",
+  telefono: "",
 };
 
-export function useProveedorForm() {
+export function useProveedorForm(onSuccess?: () => void) {
+  const [form, setForm] = useState<ProveedorForm>(INITIAL);
 
-    const [form, setForm] =
-        useState<ProveedorForm>(INITIAL);
+  const [loading, setLoading] = useState(false);
 
-    const [loading, setLoading] =
-        useState(false);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-        const { name, value } = e.target;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-        setForm((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
+    setLoading(true);
 
-    const handleSubmit = async (
-        e: React.FormEvent
-    ) => {
+    try {
+      const res = await api.post("/api/proveedores", form);
 
-        e.preventDefault();
+      console.log("Proveedor creado:", res.data);
 
-        setLoading(true);
+      Swal.fire({
+        icon: "success",
+        title: "Proveedor creado",
+        text: "El proveedor fue guardado correctamente",
+        confirmButtonColor: "#6366f1",
+      });
 
-        try {
+      setForm(INITIAL);
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (err: unknown) {
+      console.error(err);
 
-            const res = await api.post(
-                "/api/proveedores",
-                form
-            );
+      let message = "Error al guardar proveedor";
 
-            console.log(
-                "Proveedor creado:",
-                res.data
-            );
+      if (typeof err === "object" && err !== null && "response" in err) {
+        const error = err as {
+          response?: {
+            data?: {
+              message?: string;
+            };
+          };
+        };
 
-            Swal.fire({
-                icon: "success",
-                title: "Proveedor creado",
-                text: "El proveedor fue guardado correctamente",
-                confirmButtonColor: "#6366f1",
-            });
+        message = error.response?.data?.message || message;
+      }
 
-            setForm(INITIAL);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: message,
+        confirmButtonColor: "#ef4444",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        } catch (err: any) {
-
-            console.error(err);
-
-            const message =
-                err?.response?.data?.message ||
-                "Error al guardar proveedor";
-
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: message,
-                confirmButtonColor: "#ef4444",
-            });
-
-        } finally {
-
-            setLoading(false);
-        }
-    };
-
-    return {
-        form,
-        loading,
-        handleChange,
-        handleSubmit,
-    };
+  return {
+    form,
+    loading,
+    handleChange,
+    handleSubmit,
+  };
 }
