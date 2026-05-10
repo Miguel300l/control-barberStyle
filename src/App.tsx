@@ -10,7 +10,7 @@ import Avatars from "./pages/UiElements/Avatars";
 import Buttons from "./pages/UiElements/Buttons";
 import LineChart from "./pages/Charts/LineChart";
 import BarChart from "./pages/Charts/BarChart";
-import Calendar from "./pages/Calendar";
+import Proveedores from "./pages/Proveedores";
 import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
 import Blank from "./pages/Blank";
@@ -18,6 +18,9 @@ import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import ProductosPage from "./pages/ProductosPage";
+import Movimientos from "./pages/MovimientosPage";
+import Inventarios from "./pages/InventariosPage";
+import Reportes from "./pages/ReportesPage";
 import ProtectedRoute from "../src/ProtectedRoute";
 
 export default function App() {
@@ -35,8 +38,11 @@ export default function App() {
 
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<UserProfiles />} />
-              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/Proveedores" element={<Proveedores />} />
               <Route path="/productos" element={<ProductosPage />} />
+              <Route path="/Movimientos" element={<Movimientos />} />
+              <Route path="/Inventarios" element={<Inventarios />} />
+              <Route path="/Reportes" element={<Reportes />} />
               <Route path="/blank" element={<Blank />} />
 
               {/* Forms */}
