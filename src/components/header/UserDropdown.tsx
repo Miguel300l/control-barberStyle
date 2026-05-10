@@ -2,12 +2,15 @@ import { useState } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useNavigate } from "react-router";
-import api from "../../axios/axios";
+import { useAuthStore } from "../../store/authStore";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
@@ -16,19 +19,10 @@ export default function UserDropdown() {
     setIsOpen(false);
   }
 
-  // LOGOUT
   const handleLogout = async () => {
     try {
 
-      await api.post(
-        "/api/auth/logout",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-
-      localStorage.removeItem("user");
+      await logout();
 
       navigate("/signin");
 

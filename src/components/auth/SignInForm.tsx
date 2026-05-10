@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import api from "../../axios/axios";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
+import { useAuthStore } from "../../store/authStore";
 
 export default function SignInForm() {
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+
   const [showPassword, setShowPassword] = useState(false);
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
@@ -22,21 +24,8 @@ export default function SignInForm() {
     setError("");
 
     try {
-      const res = await api.post(
-        "/api/auth/signin",
-        {
-          correo,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(res.data.user)
-      );
+      await login(correo, password);
 
       navigate("/");
 
@@ -72,7 +61,7 @@ export default function SignInForm() {
               <div className="space-y-6">
                 <div>
                   <Label>
-                    Email <span className="text-error-500">*</span>
+                    Correo <span className="text-error-500">*</span>
                   </Label>
 
                   <Input
@@ -84,12 +73,12 @@ export default function SignInForm() {
                 </div>
                 <div>
                   <Label>
-                    Password <span className="text-error-500">*</span>
+                    Contraseña <span className="text-error-500">*</span>
                   </Label>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder="Introduce contraseña"
                       value={password}
                       onChange={(e: any) => setPassword(e.target.value)}
                     />
@@ -118,7 +107,7 @@ export default function SignInForm() {
                     size="sm"
                     disabled={loading}
                   >
-                    {loading ? "Ingresando..." : "Sign in"}
+                    {loading ? "Ingresando..." : "Iniciar Sesion"}
                   </Button>
                 </div>
               </div>
