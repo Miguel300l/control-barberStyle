@@ -13,7 +13,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
 
     user: null,
-    loading: false,
+    loading: true,
 
     login: async (correo, password) => {
         try {
@@ -21,37 +21,54 @@ export const useAuthStore = create<AuthState>((set) => ({
             await api.post("/api/auth/signin", {
                 correo,
                 password
+            }, {
+                withCredentials: true
             });
 
-            const res = await api.get("/api/auth/me");
+            const res = await api.get("/api/auth/me", {
+                withCredentials: true
+            });
 
             set({ user: res.data.user });
 
         } catch (error) {
-
+            set({ user: null });
             throw error;
-
         }
     },
 
     loadUser: async () => {
-
         try {
+            set({ loading: true });
 
-            const res = await api.get("/api/auth/me");
+            const res = await api.get("/api/auth/me", {
+                withCredentials: true
+            });
 
-            set({ user: res.data.user });
+            set({
+                user: res.data.user,
+                loading: false
+            });
 
         } catch {
-            set({ user: null });
+            set({
+                user: null,
+                loading: false
+            });
         }
     },
 
     logout: async () => {
+        try {
+            await api.post("/api/auth/logout", {}, {
+                withCredentials: true
+            });
 
-        await api.post("/api/auth/logout");
+            set({ user: null });
 
-        set({ user: null });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 }));
