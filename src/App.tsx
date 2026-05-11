@@ -22,8 +22,15 @@ import Movimientos from "./pages/MovimientosPage";
 import Inventarios from "./pages/InventariosPage";
 import Reportes from "./pages/ReportesPage";
 import ProtectedRoute from "../src/ProtectedRoute";
+import { useEffect } from "react";
+import { useAuthStore } from "./store/authStore";
 
 export default function App() {
+
+  const loadUser = useAuthStore((s) => s.loadUser);
+  useEffect(() => {
+    loadUser();
+  }, []);
   return (
     <>
       <Router>

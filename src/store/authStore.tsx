@@ -16,31 +16,37 @@ export const useAuthStore = create<AuthState>((set) => ({
     loading: true,
 
     login: async (correo, password) => {
-        try {
+        set({ loading: true });
 
-            await api.post("/api/auth/signin", {
-                correo,
-                password
-            }, {
-                withCredentials: true
-            });
+        try {
+            await api.post(
+                "/api/auth/signin",
+                { correo, password },
+                { withCredentials: true }
+            );
 
             const res = await api.get("/api/auth/me", {
                 withCredentials: true
             });
 
-            set({ user: res.data.user });
+            set({
+                user: res.data.user,
+                loading: false
+            });
 
         } catch (error) {
-            set({ user: null });
+            set({
+                user: null,
+                loading: false
+            });
             throw error;
         }
     },
 
     loadUser: async () => {
-        try {
-            set({ loading: true });
+        set({ loading: true });
 
+        try {
             const res = await api.get("/api/auth/me", {
                 withCredentials: true
             });
@@ -60,9 +66,11 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     logout: async () => {
         try {
-            await api.post("/api/auth/logout", {}, {
-                withCredentials: true
-            });
+            await api.post(
+                "/api/auth/logout",
+                {},
+                { withCredentials: true }
+            );
 
             set({ user: null });
 
