@@ -32,7 +32,7 @@ export default function MovimientoForm() {
         id_proveedor: "",
         cantidad: "",
         precio: "",
-        fecha: new Date().toISOString().split("T")[0],
+        fecha: new Date().toLocaleDateString("en-CA"),
     });
 
     useEffect(() => {
