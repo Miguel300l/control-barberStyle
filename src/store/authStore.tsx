@@ -56,7 +56,12 @@ export const useAuthStore = create<AuthState>((set) => ({
                 loading: false
             });
 
-        } catch {
+        } catch (error: any) {
+
+            if (error.response?.status !== 401) {
+                console.error("Error en loadUser:", error);
+            }
+
             set({
                 user: null,
                 loading: false
