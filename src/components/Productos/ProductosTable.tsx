@@ -17,8 +17,6 @@ export default function ProductosTable({
       try {
         const response = await api.get("/api/productos");
 
-        console.log(response.data);
-
         setData(response.data);
       } catch (error) {
         console.error("Error al obtener productos:", error);

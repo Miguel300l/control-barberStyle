@@ -1,12 +1,18 @@
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import * as XLSX from "xlsx";
 
 interface Column<T> {
     key: keyof T;
     label: string;
+    render?: (
+        value: any,
+        row: T,
+    ) => ReactNode;
 }
 
-interface TableToolsProps<T> {
+interface TableToolsProps<
+    T extends Record<string, any>,
+> {
     data: T[];
     columns: Column<T>[];
     fileName?: string;
@@ -149,7 +155,15 @@ export default function TableTools<T extends Record<string, any>>({
                                             key={String(col.key)}
                                             className="px-5 py-3"
                                         >
-                                            {String(row[col.key])}
+                                            {col.render
+                                                ? col.render(
+                                                    row[col.key],
+                                                    row,
+                                                )
+                                                : String(
+                                                    row[col.key] ??
+                                                    "",
+                                                )}
                                         </td>
                                     ))}
                                 </tr>
