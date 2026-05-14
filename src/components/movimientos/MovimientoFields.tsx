@@ -19,7 +19,6 @@ export default function MovimientoFields({
     tipo,
     form,
     productos,
-    proveedores,
     productoSeleccionado,
     resetKey,
     setTipo,
