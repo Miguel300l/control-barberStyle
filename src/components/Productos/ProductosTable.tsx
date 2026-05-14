@@ -26,10 +26,15 @@ export default function ProductosTable({
     obtenerProductos();
   }, [refresh]);
 
+  const productosFormateados = data.map((producto: any) => ({
+    ...producto,
+    proveedorNombre: producto.proveedor?.nombre || "Sin proveedor",
+  }));
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <TableTools
-        data={data}
+        data={productosFormateados}
         title="LISTADO PRODUCTOS"
         fileName="productos.xlsx"
         columns={[
@@ -42,15 +47,19 @@ export default function ProductosTable({
             label: "Código",
           },
           {
+            key: "proveedorNombre",
+            label: "Proveedor",
+          },
+          {
             key: "descripcion",
             label: "Descripción",
           },
           {
-            key: "precioVenta",
-            label: "Precio",
+            key: "stockMinimo",
+            label: "Stock Minimo",
           },
           {
-            key: "stockMinimo",
+            key: "stock",
             label: "Stock",
           },
         ]}

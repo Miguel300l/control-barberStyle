@@ -1,11 +1,14 @@
 import Input from "../../components/form/input/InputField";
 import Label from "../../components/form/Label";
 import TextArea from "../../components/form/input/TextArea";
+import Select from "../form/Select";
 import { ProductoForm } from "./types";
 
 interface Props {
   form: ProductoForm;
-
+  proveedores: any[];
+  setForm: any;
+  resetKey: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
   onDescriptionChange: (value: string) => void;
@@ -13,9 +16,19 @@ interface Props {
 
 export default function ProductosFields({
   form,
+  proveedores,
+  resetKey,
+  setForm,
   onChange,
   onDescriptionChange,
 }: Props) {
+
+  const proveedorOptions = proveedores.map((proveedor) => ({
+    value: proveedor._id,
+    label: proveedor.nombre,
+  }));
+
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div>
@@ -43,14 +56,20 @@ export default function ProductosFields({
       </div>
 
       <div>
-        <Label>Precio Venta</Label>
-        <Input
-          type="number"
-          name="precioVenta"
-          value={form.precioVenta}
-          onChange={onChange}
-          placeholder="0.00"
+        <Label>Proveedor</Label>
+
+        <Select
+          key={`proveedor-${resetKey}`}
+          options={proveedorOptions}
+          placeholder="Buscar proveedor..."
+          isSearchable
           required
+          onChange={(option: any) =>
+            setForm((prev: any) => ({
+              ...prev,
+              proveedor: option.value,
+            }))
+          }
         />
       </div>
 
@@ -61,7 +80,22 @@ export default function ProductosFields({
           name="stockMinimo"
           value={form.stockMinimo}
           onChange={onChange}
-          placeholder="5"
+          placeholder="Minimo Recomendado 5"
+          min="1"
+          required
+        />
+      </div>
+
+      <div>
+        <Label>Stock</Label>
+        <Input
+          type="number"
+          name="stock"
+          value={form.stock}
+          onChange={onChange}
+          placeholder="Existencias"
+          min="1"
+          required
         />
       </div>
 
@@ -71,8 +105,9 @@ export default function ProductosFields({
         <TextArea
           value={form.descripcion || ""}
           onChange={onDescriptionChange}
-          rows={4}
+          rows={2}
           placeholder="Descripción producto"
+          required
         />
       </div>
     </div>

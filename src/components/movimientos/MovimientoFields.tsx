@@ -38,11 +38,6 @@ export default function MovimientoFields({
         label: producto.nombre,
     }));
 
-    const proveedorOptions = proveedores.map((proveedor) => ({
-        value: proveedor._id,
-        label: proveedor.nombre,
-    }));
-
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
 
@@ -67,7 +62,7 @@ export default function MovimientoFields({
                 <Select
                     key={`producto-${resetKey}`}
                     options={productoOptions}
-                    placeholder="Buscar producto..."
+                    placeholder="Seleccione producto"
                     isSearchable
                     onChange={(option: any) => {
 
@@ -80,6 +75,7 @@ export default function MovimientoFields({
                         setForm((prev: any) => ({
                             ...prev,
                             id_producto: option.value,
+                            id_proveedor: producto?.proveedor?._id || "",
                         }));
                     }}
                 />
@@ -92,9 +88,9 @@ export default function MovimientoFields({
                 <Input
                     type="text"
                     value={
-                        productoSeleccionado
-                            ? productoSeleccionado.stock.toLocaleString("es-CO")
-                            : ""
+                        productoSeleccionado?.stock != null
+                            ? Number(productoSeleccionado.stock).toLocaleString("es-CO")
+                            : "0"
                     }
                     disabled
                 />
@@ -105,17 +101,31 @@ export default function MovimientoFields({
                 <div>
                     <Label>Proveedor</Label>
 
-                    <Select
-                        key={`proveedor-${resetKey}`}
-                        options={proveedorOptions}
-                        placeholder="Buscar proveedor..."
-                        isSearchable
-                        onChange={(option: any) =>
-                            setForm((prev: any) => ({
-                                ...prev,
-                                id_proveedor: option.value,
-                            }))
+                    <Input
+                        type="text"
+                        value={
+                            productoSeleccionado?.proveedor?.nombre || "Sin proveedor"
                         }
+                        disabled
+                    />
+                </div>
+            )}
+
+            {/* PROMEDIO COMPRA */}
+            {tipo === "venta" && (
+                <div>
+                    <Label>Promedio Compra</Label>
+
+                    <Input
+                        type="text"
+                        value={
+                            productoSeleccionado?.precio_compra_promedio != null
+                                ? Number(
+                                    productoSeleccionado.precio_compra_promedio
+                                ).toLocaleString("es-CO")
+                                : "0"
+                        }
+                        disabled
                     />
                 </div>
             )}

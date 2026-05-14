@@ -3,14 +3,15 @@ export interface Producto {
   nombre: string;
   codigo: string;
   descripcion?: string;
-  precioVenta: number;
-  stock: number;
+  stock?: number;
   stockMinimo?: number;
+  proveedor: string;
 }
 export interface ProductoForm {
   nombre: string;
   codigo: string;
   descripcion: string;
-  precioVenta: string;
+  stock: string;
   stockMinimo: string;
+  proveedor: string;
 }

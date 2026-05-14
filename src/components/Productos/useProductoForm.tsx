@@ -7,8 +7,9 @@ const INITIAL: ProductoForm = {
   nombre: "",
   codigo: "",
   descripcion: "",
-  precioVenta: "",
+  stock: "",
   stockMinimo: "",
+  proveedor: "",
 };
 
 export function useProductoForm(onSuccess?: () => void) {
@@ -40,7 +41,7 @@ export function useProductoForm(onSuccess?: () => void) {
     try {
       const payload = {
         ...form,
-        precioVenta: Number(form.precioVenta),
+        stock: Number(form.stock),
         stockMinimo: Number(form.stockMinimo),
       };
 
@@ -91,6 +92,7 @@ export function useProductoForm(onSuccess?: () => void) {
   return {
     form,
     loading,
+    setForm,
     handleChange,
     handleDescriptionChange,
     handleSubmit,

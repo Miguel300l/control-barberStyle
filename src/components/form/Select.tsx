@@ -12,6 +12,7 @@ interface SelectProps {
   className?: string;
   defaultValue?: Option | null;
   isSearchable?: boolean;
+  required?: boolean;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -20,6 +21,7 @@ const Select: React.FC<SelectProps> = ({
   onChange,
   defaultValue = null,
   isSearchable = true,
+  required = false,
 }) => {
   return (
     <ReactSelect
@@ -28,6 +30,7 @@ const Select: React.FC<SelectProps> = ({
       onChange={onChange}
       defaultValue={defaultValue}
       isSearchable={isSearchable}
+      required={required}
       classNamePrefix="react-select"
       components={{
         IndicatorSeparator: () => null,
