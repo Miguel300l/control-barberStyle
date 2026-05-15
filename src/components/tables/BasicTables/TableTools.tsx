@@ -17,6 +17,7 @@ interface TableToolsProps<
     columns: Column<T>[];
     fileName?: string;
     title?: string;
+    rowClass?: (row: T) => string;
 }
 
 export default function TableTools<T extends Record<string, any>>({
@@ -24,6 +25,7 @@ export default function TableTools<T extends Record<string, any>>({
     columns,
     fileName = "reporte.xlsx",
     title = "REPORTE",
+    rowClass,
 }: TableToolsProps<T>) {
     const [search, setSearch] = useState("");
     const [pageSize, setPageSize] = useState(10);
@@ -149,7 +151,11 @@ export default function TableTools<T extends Record<string, any>>({
                             </tr>
                         ) : (
                             paginated.map((row, i) => (
-                                <tr key={i} className="border-b hover:bg-blue-50">
+                                <tr
+                                    key={i}
+                                    className={`border-b hover:bg-blue-50 ${rowClass ? rowClass(row) : ""
+                                        }`}
+                                >
                                     {columns.map((col) => (
                                         <td
                                             key={String(col.key)}

@@ -19,8 +19,9 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import ProductosPage from "./pages/ProductosPage";
 import Movimientos from "./pages/MovimientosPage";
-import Inventarios from "./pages/InventariosPage";
-import Reportes from "./pages/ReportesPage";
+import Reportes from "./pages/InventariosPage";
+import Inventario from "./pages/InventarioTotal";
+import ProdcutoEconomico from "./pages/ReportesPage";
 import ProtectedRoute from "../src/ProtectedRoute";
 import { useEffect } from "react";
 import { useAuthStore } from "./store/authStore";
@@ -48,8 +49,9 @@ export default function App() {
               <Route path="/Proveedores" element={<Proveedores />} />
               <Route path="/productos" element={<ProductosPage />} />
               <Route path="/Movimientos" element={<Movimientos />} />
-              <Route path="/Inventarios" element={<Inventarios />} />
               <Route path="/Reportes" element={<Reportes />} />
+              <Route path="/ProdcutoEconomico" element={<ProdcutoEconomico />} />
+              <Route path="/Inventario" element={<Inventario />} />
               <Route path="/blank" element={<Blank />} />
 
               {/* Forms */}

@@ -42,7 +42,7 @@ export default function InventariosPage() {
       {/* TITULO */}
       <div>
         <h1 className="text-2xl font-bold">
-          Inventario
+          Reportes
         </h1>
       </div>
 
