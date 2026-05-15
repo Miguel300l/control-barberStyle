@@ -8,6 +8,7 @@ interface MovimientosTableProps {
         desde: string;
         hasta: string;
         tipo: string;
+        id_producto?: string;
     };
 }
 
@@ -28,76 +29,164 @@ export default function MovimientosTable({
     filtros,
 }: MovimientosTableProps) {
 
-    const [data, setData] = useState<Movimiento[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [data, setData] =
+        useState<Movimiento[]>([]);
+
+    const [loading, setLoading] =
+        useState(false);
 
     useEffect(() => {
-        const obtenerDatos = async () => {
-            try {
-                setLoading(true);
 
-                const response = await api.get("/api/movimientos", {
-                    params: {
-                        desde: filtros.desde,
-                        hasta: filtros.hasta,
-                        tipo: filtros.tipo,
-                    },
-                });
+        const obtenerDatos =
+            async () => {
 
-                setData(response.data.movimientos || []);
-            } catch (error) {
-                console.error("Error:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+                try {
 
-        if (filtros.desde && filtros.hasta) {
+                    setLoading(true);
+
+                    const params: any = {
+
+                        desde:
+                            filtros.desde,
+
+                        hasta:
+                            filtros.hasta,
+
+                        tipo:
+                            filtros.tipo,
+
+                    };
+
+                    if (
+                        filtros.id_producto
+                    ) {
+
+                        params.id_producto =
+                            filtros.id_producto;
+                    }
+
+                    const response =
+                        await api.get(
+                            "/api/movimientos",
+                            {
+                                params,
+                            }
+                        );
+
+                    setData(
+                        response.data
+                            .movimientos || []
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Error:",
+                        error
+                    );
+
+                } finally {
+
+                    setLoading(false);
+                }
+            };
+
+        if (
+            filtros.desde &&
+            filtros.hasta
+        ) {
+
             obtenerDatos();
         }
     }, [refresh, filtros]);
 
-    const movimientosFormateados = data.map((item) => ({
-        tipo:
-            item.tipo.charAt(0).toUpperCase() +
-            item.tipo.slice(1),
+    const movimientosFormateados =
+        data.map((item) => ({
 
-        producto: item.producto,
+            tipo:
+                item.tipo.charAt(0)
+                    .toUpperCase() +
+                item.tipo.slice(1),
 
-        usuario_proveedor:
-            item.usuario ||
-            item.proveedor ||
-            "Sin registro",
+            producto:
+                item.producto,
 
-        cantidad: item.cantidad,
+            usuario_proveedor:
+                item.usuario ||
+                item.proveedor ||
+                "Sin registro",
 
-        precio_unitario:
-            `$${item.precio_unitario.toLocaleString("es-CO")}`,
+            cantidad:
+                item.cantidad,
 
-        total:
-            `$${item.total.toLocaleString("es-CO")}`,
+            precio_unitario:
+                `$${item.precio_unitario.toLocaleString("es-CO")}`,
 
-        fecha: new Date(item.fecha).toLocaleDateString("es-CO"),
-    }));
+            total:
+                `$${item.total.toLocaleString("es-CO")}`,
+
+            fecha:
+                new Date(
+                    item.fecha
+                ).toLocaleDateString(
+                    "es-CO"
+                ),
+
+        }));
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
 
             {loading ? (
-                <p>Cargando movimientos...</p>
+
+                <p>
+                    Cargando movimientos...
+                </p>
+
             ) : (
                 <TableTools
-                    data={movimientosFormateados}
+                    data={
+                        movimientosFormateados
+                    }
                     title="LISTADO MOVIMIENTOS"
                     fileName="movimientos.xlsx"
                     columns={[
-                        { key: "tipo", label: "Tipo" },
-                        { key: "producto", label: "Producto" },
-                        { key: "usuario_proveedor", label: "Proveedor" },
-                        { key: "cantidad", label: "Cantidad" },
-                        { key: "precio_unitario", label: "Precio Unitario" },
-                        { key: "total", label: "Total" },
-                        { key: "fecha", label: "Fecha" },
+
+                        {
+                            key: "tipo",
+                            label: "Tipo"
+                        },
+
+                        {
+                            key: "producto",
+                            label: "Producto"
+                        },
+
+                        {
+                            key: "usuario_proveedor",
+                            label: "Proveedor / Usuario"
+                        },
+
+                        {
+                            key: "cantidad",
+                            label: "Cantidad"
+                        },
+
+                        {
+                            key: "precio_unitario",
+                            label: "Precio Unitario"
+                        },
+
+                        {
+                            key: "total",
+                            label: "Total"
+                        },
+
+                        {
+                            key: "fecha",
+                            label: "Fecha"
+                        },
+
                     ]}
                 />
             )}
