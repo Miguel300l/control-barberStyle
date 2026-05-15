@@ -16,7 +16,6 @@ interface Movimiento {
     tipo: string;
     id: string;
     producto: string;
-    usuario?: string;
     proveedor?: string;
     cantidad: number;
     precio_unitario: number;
@@ -110,9 +109,7 @@ export default function MovimientosTable({
 
             producto:
                 item.producto,
-
             usuario_proveedor:
-                item.usuario ||
                 item.proveedor ||
                 "Sin registro",
 
@@ -164,7 +161,7 @@ export default function MovimientosTable({
 
                         {
                             key: "usuario_proveedor",
-                            label: "Proveedor / Usuario"
+                            label: "Proveedor"
                         },
 
                         {
