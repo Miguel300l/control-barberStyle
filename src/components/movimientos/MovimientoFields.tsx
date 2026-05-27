@@ -129,6 +129,25 @@ export default function MovimientoFields({
                 </div>
             )}
 
+            {/* PROMEDIO VENTA */}
+            {tipo === "venta" && (
+                <div>
+                    <Label>Promedio Venta</Label>
+
+                    <Input
+                        type="text"
+                        value={
+                            productoSeleccionado?.precio_venta_promedio != null
+                                ? Number(
+                                    productoSeleccionado.precio_venta_promedio
+                                ).toLocaleString("es-CO")
+                                : "0"
+                        }
+                        disabled
+                    />
+                </div>
+            )}
+
             {/* FECHA */}
             <div>
                 <Label>Fecha</Label>
