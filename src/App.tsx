@@ -28,10 +28,31 @@ import { useAuthStore } from "./store/authStore";
 
 export default function App() {
 
-  const loadUser = useAuthStore((s) => s.loadUser);
+  const loadUser =
+    useAuthStore(
+      s => s.loadUser
+    );
+
+  const loading =
+    useAuthStore(
+      s => s.loading
+    );
+
   useEffect(() => {
+
     loadUser();
+
   }, []);
+
+  if (loading) {
+
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Cargando sesión...
+      </div>
+    );
+  }
+
   return (
     <>
       <Router>
