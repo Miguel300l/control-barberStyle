@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignIn from "./pages/AuthPages/SignIn";
 import NotFound from "./pages/OtherPage/NotFound";
 import UserProfiles from "./pages/UserProfiles";
@@ -33,25 +33,11 @@ export default function App() {
       s => s.loadUser
     );
 
-  const loading =
-    useAuthStore(
-      s => s.loading
-    );
-
   useEffect(() => {
 
     loadUser();
 
   }, []);
-
-  if (loading) {
-
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        Cargando sesión...
-      </div>
-    );
-  }
 
   return (
     <>
