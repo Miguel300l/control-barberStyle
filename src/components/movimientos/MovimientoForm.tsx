@@ -14,26 +14,43 @@ import { useAuthStore } from "../../store/authStore";
 
 export default function MovimientoForm() {
 
-    const user = useAuthStore((state) => state.user);
+    const user = useAuthStore(
+        (state) => state.user
+    );
 
     const [tipo, setTipo] =
-        useState<"compra" | "venta">("compra");
+        useState<"compra" | "venta">(
+            "compra"
+        );
 
-    const [productos, setProductos] = useState([]);
-    const [proveedores, setProveedores] = useState([]);
+    const [productos, setProductos] =
+        useState([]);
 
-    const [productoSeleccionado, setProductoSeleccionado] =
-        useState<any>(null);
+    const [proveedores, setProveedores] =
+        useState([]);
 
-    const [resetKey, setResetKey] = useState(0);
+    const [
+        productoSeleccionado,
+        setProductoSeleccionado
+    ] = useState<any>(null);
 
-    const [form, setForm] = useState({
-        id_producto: "",
-        id_proveedor: "",
-        cantidad: "",
-        precio: "",
-        fecha: new Date().toLocaleDateString("en-CA"),
-    });
+    const [resetKey, setResetKey] =
+        useState(0);
+
+    const [loading, setLoading] =
+        useState(false);
+
+    const [form, setForm] =
+        useState({
+            id_producto: "",
+            id_proveedor: "",
+            cantidad: "",
+            precio: "",
+            fecha: new Date()
+                .toLocaleDateString(
+                    "en-CA"
+                ),
+        });
 
     useEffect(() => {
 
@@ -41,114 +58,191 @@ export default function MovimientoForm() {
 
     }, []);
 
-    const cargarDatos = async () => {
+    const cargarDatos =
+        async () => {
 
-        try {
+            try {
 
-            const [productosData, proveedoresData] =
-                await Promise.all([
-                    obtenerProductos(),
-                    obtenerProveedores(),
-                ]);
+                const [
+                    productosData,
+                    proveedoresData
+                ] =
+                    await Promise.all([
+                        obtenerProductos(),
+                        obtenerProveedores(),
+                    ]);
 
-            setProductos(productosData);
-            setProveedores(proveedoresData);
-
-        } catch {
-
-            Swal.fire(
-                "Error",
-                "No se pudieron cargar datos",
-                "error"
-            );
-        }
-    };
-
-    const fechaActual = new Date().toLocaleDateString("en-CA");
-
-    const limpiarFormulario = () => {
-
-        setForm({
-            id_producto: "",
-            id_proveedor: "",
-            cantidad: "",
-            precio: "",
-            fecha: fechaActual,
-        });
-
-        setProductoSeleccionado(null);
-
-        setResetKey((prev) => prev + 1);
-    };
-
-    const handleSubmit = async (
-        e: React.FormEvent
-    ) => {
-
-        e.preventDefault();
-
-        try {
-
-            if (!user?.id) {
-                return Swal.fire(
-                    "Warning",
-                    "No hay usuario autenticado",
-                    "warning"
+                setProductos(
+                    productosData
                 );
-            }
 
-            if (tipo === "compra") {
+                setProveedores(
+                    proveedoresData
+                );
 
-                await crearCompra({
-                    id_producto: form.id_producto,
-                    id_proveedor: form.id_proveedor,
-                    cantidad: Number(form.cantidad),
-                    precio_compra: Number(form.precio),
-                    costo_total:
-                        Number(form.cantidad) *
-                        Number(form.precio),
-                    fecha: form.fecha,
-                });
+            } catch {
 
                 Swal.fire(
-                    "Éxito",
-                    "Compra registrada",
-                    "success"
-                );
-
-            } else {
-
-                await crearVenta({
-                    id_producto: form.id_producto,
-                    id_usuario: user.id,
-                    cantidad: Number(form.cantidad),
-                    precio_venta: Number(form.precio),
-                    precio_total:
-                        Number(form.cantidad) *
-                        Number(form.precio),
-                    fecha: form.fecha,
-                });
-
-                Swal.fire(
-                    "Éxito",
-                    "Venta registrada",
-                    "success"
+                    "Error",
+                    "No se pudieron cargar datos",
+                    "error"
                 );
             }
+        };
 
-            limpiarFormulario();
-            cargarDatos();
-
-        } catch (error: any) {
-
-            Swal.fire(
-                "Error",
-                error.response?.data?.message ||
-                "Error al guardar",
-                "error"
+    const fechaActual =
+        new Date()
+            .toLocaleDateString(
+                "en-CA"
             );
-        }
-    };
+
+    const limpiarFormulario =
+        () => {
+
+            setForm({
+                id_producto: "",
+                id_proveedor: "",
+                cantidad: "",
+                precio: "",
+                fecha:
+                    fechaActual,
+            });
+
+            setProductoSeleccionado(
+                null
+            );
+
+            setResetKey(
+                (prev) =>
+                    prev + 1
+            );
+        };
+
+    const handleSubmit =
+        async (
+            e: React.FormEvent
+        ) => {
+
+            e.preventDefault();
+
+            if (loading)
+                return;
+
+            setLoading(true);
+
+            try {
+
+                if (
+                    !user?.id
+                ) {
+
+                    return Swal.fire(
+                        "Warning",
+                        "No hay usuario autenticado",
+                        "warning"
+                    );
+                }
+
+                if (
+                    tipo ===
+                    "compra"
+                ) {
+
+                    await crearCompra({
+                        id_producto:
+                            form.id_producto,
+
+                        id_proveedor:
+                            form.id_proveedor,
+
+                        cantidad:
+                            Number(
+                                form.cantidad
+                            ),
+
+                        precio_compra:
+                            Number(
+                                form.precio
+                            ),
+
+                        costo_total:
+                            Number(
+                                form.cantidad
+                            ) *
+                            Number(
+                                form.precio
+                            ),
+
+                        fecha:
+                            form.fecha,
+                    });
+
+                    Swal.fire(
+                        "Éxito",
+                        "Compra registrada",
+                        "success"
+                    );
+
+                } else {
+
+                    await crearVenta({
+                        id_producto:
+                            form.id_producto,
+
+                        id_usuario:
+                            user.id,
+
+                        cantidad:
+                            Number(
+                                form.cantidad
+                            ),
+
+                        precio_venta:
+                            Number(
+                                form.precio
+                            ),
+
+                        precio_total:
+                            Number(
+                                form.cantidad
+                            ) *
+                            Number(
+                                form.precio
+                            ),
+
+                        fecha:
+                            form.fecha,
+                    });
+
+                    Swal.fire(
+                        "Éxito",
+                        "Venta registrada",
+                        "success"
+                    );
+                }
+
+                limpiarFormulario();
+                cargarDatos();
+
+            } catch (
+            error: any
+            ) {
+
+                Swal.fire(
+                    "Error",
+                    error
+                        .response
+                        ?.data
+                        ?.message ||
+                    "Error al guardar",
+                    "error"
+                );
+
+            } finally {
+
+                setLoading(false);
+            }
+        };
 
     return (
         <form
@@ -178,9 +272,18 @@ export default function MovimientoForm() {
             <div className="flex justify-center mt-6">
                 <button
                     type="submit"
-                    className="px-8 py-2 border-2 border-blue-700 text-blue-700 font-semibold rounded-lg"
+                    disabled={
+                        loading
+                    }
+                    className={`px-8 py-2 border-2 font-semibold rounded-lg transition
+                        ${loading
+                            ? "border-gray-400 text-gray-400 cursor-not-allowed"
+                            : "border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white"
+                        }`}
                 >
-                    Guardar
+                    {loading
+                        ? "Guardando..."
+                        : "Guardar"}
                 </button>
             </div>
         </form>

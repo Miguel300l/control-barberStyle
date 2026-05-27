@@ -47,6 +47,7 @@ export default function MovimientoFields({
                 <Select
                     options={tipoOptions}
                     placeholder="Seleccione tipo"
+                    required
                     onChange={(option: any) => {
                         setTipo(option.value);
                         limpiarFormulario();
@@ -62,6 +63,7 @@ export default function MovimientoFields({
                     key={`producto-${resetKey}`}
                     options={productoOptions}
                     placeholder="Seleccione producto"
+                    required
                     isSearchable
                     onChange={(option: any) => {
 
@@ -155,6 +157,7 @@ export default function MovimientoFields({
                 <Input
                     type="date"
                     name="fecha"
+                    required
                     value={form.fecha}
                     onChange={(e: any) =>
                         setForm({
@@ -172,6 +175,7 @@ export default function MovimientoFields({
                 <Input
                     type="number"
                     name="cantidad"
+                    required
                     value={form.cantidad}
                     onChange={(e: any) =>
                         setForm({
@@ -192,6 +196,7 @@ export default function MovimientoFields({
 
                 <Input
                     type="text"
+                    required
                     value={
                         form.precio
                             ? Number(form.precio).toLocaleString("es-CO")

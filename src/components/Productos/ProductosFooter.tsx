@@ -8,9 +8,15 @@ export default function ProductosFooter({ loading }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="px-8 py-2 border-2 border-blue-700 text-blue-700 font-semibold rounded-lg transition disabled:opacity-50"
+        className={`px-8 py-2 border-2 font-semibold rounded-lg transition
+                    ${loading
+            ? "border-gray-400 text-gray-400 cursor-not-allowed bg-gray-100"
+            : "border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white"
+          }`}
       >
-        {loading ? "Guardando..." : "Guardar"}
+        {loading
+          ? "Guardando..."
+          : "Guardar"}
       </button>
     </div>
   );
