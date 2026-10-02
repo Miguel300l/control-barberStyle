@@ -24,7 +24,7 @@ const Select: React.FC<SelectProps> = ({
   defaultValue = null,
   value = null,
   isSearchable = true,
-  required = false,
+  // required = false,
   disabled = false,
 }) => {
   return (
