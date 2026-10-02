@@ -6,14 +6,14 @@ import logo from "../icons/logo1.png";
 import {
   BoxCubeIcon,
   ChevronDownIcon,
-  GridIcon,
+  // GridIcon,
   HorizontaLDots,
   // ListIcon,
   // PageIcon,
   // PieChartIcon,
   // PlugInIcon,
   // TableIcon,
-  UserCircleIcon,
+  // UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";

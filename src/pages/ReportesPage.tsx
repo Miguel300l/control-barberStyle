@@ -120,8 +120,8 @@ export default function ProductosTable({
                   o.value === productoSeleccionado,
               ) || null
           }
-          onChange={(option) => {
-            setProductoSeleccionado(option.value);
+          onChange={(value) => {
+            setProductoSeleccionado(value);
 
             setExpanded(false);
           }}

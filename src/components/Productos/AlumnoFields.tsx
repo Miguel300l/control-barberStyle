@@ -145,19 +145,10 @@ export default function AlumnoFields({
               (option) => option.value === form.tipoDocumento
             ) ?? null
           }
-          onChange={(option) => {
-            if (!option) {
-              setForm((prev) => ({
-                ...prev,
-                tipoDocumento: "",
-              }));
-
-              return;
-            }
-
+          onChange={(value) => {
             setForm((prev) => ({
               ...prev,
-              tipoDocumento: option.value,
+              tipoDocumento: value,
             }));
           }}
           disabled={alumnoEncontrado}
