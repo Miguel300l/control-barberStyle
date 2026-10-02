@@ -1,66 +1,82 @@
 import { useEffect, useState } from "react";
 import api from "../../axios/axios";
-import { Producto } from "./types";
+import { Alumno } from "./AlumnoForm";
 import TableTools from "../tables/BasicTables/TableTools";
 
-interface ProductosTableProps {
+interface AlumnoTableProps {
   refresh: number;
 }
 
-export default function ProductosTable({
-  refresh,
-}: ProductosTableProps) {
-  const [data, setData] = useState<Producto[]>([]);
+export default function AlumnoTable({ refresh }: AlumnoTableProps) {
+  const [data, setData] = useState<Alumno[]>([]);
 
   useEffect(() => {
-    const obtenerProductos = async () => {
+    const obtenerAlumnos = async () => {
       try {
-        const response = await api.get("/api/productos");
+        const response = await api.get("/api/alumnos");
 
-        setData(response.data);
+        const alumnosFormateados = response.data.map((alumno: Alumno) => ({
+          ...alumno,
+          fecha: alumno.fecha
+            ? new Date(alumno.fecha).toISOString().split("T")[0]
+            : "",
+        }));
+
+        setData(alumnosFormateados);
       } catch (error) {
-        console.error("Error al obtener productos:", error);
+        console.error("Error al obtener alumnos:", error);
       }
     };
 
-    obtenerProductos();
+    obtenerAlumnos();
   }, [refresh]);
-
-  const productosFormateados = data.map((producto: any) => ({
-    ...producto,
-    proveedorNombre: producto.proveedor?.nombre || "Sin proveedor",
-  }));
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <TableTools
-        data={productosFormateados}
-        title="LISTADO PRODUCTOS"
-        fileName="productos.xlsx"
+        data={data}
+        title="LISTADO DE ALUMNOS"
+        fileName="alumnos.xlsx"
         columns={[
           {
-            key: "nombre",
-            label: "Nombre",
+            key: "nombres",
+            label: "Nombres",
           },
           {
-            key: "codigo",
-            label: "Código",
+            key: "apellidos",
+            label: "Apellidos",
           },
           {
-            key: "proveedorNombre",
-            label: "Proveedor",
+            key: "tipoDocumento",
+            label: "Tipo de documento",
           },
           {
-            key: "descripcion",
-            label: "Descripción",
+            key: "documento",
+            label: "Documento",
           },
           {
-            key: "stockMinimo",
-            label: "Stock Minimo",
+            key: "celular",
+            label: "Celular",
           },
           {
-            key: "stock",
-            label: "Stock",
+            key: "edad",
+            label: "Edad",
+          },
+          {
+            key: "abono",
+            label: "Abono",
+            render: (value: number) =>
+              Number(value).toLocaleString("es-CO"),
+          },
+          {
+            key: "fecha",
+            label: "Fecha",
+          },
+          {
+            key: "saldoPendiente",
+            label: "Saldo pendiente",
+            render: (value: number) =>
+              Number(value).toLocaleString("es-CO"),
           },
         ]}
       />

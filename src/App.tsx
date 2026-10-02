@@ -16,9 +16,9 @@ import FormElements from "./pages/Forms/FormElements";
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
-import Home from "./pages/Dashboard/Home";
+// import Home from "./pages/Dashboard/Home";
 import ProductosPage from "./pages/ProductosPage";
-import Movimientos from "./pages/MovimientosPage";
+// import Movimientos from "./pages/MovimientosPage";
 import Reportes from "./pages/InventariosPage";
 import Inventario from "./pages/InventarioTotal";
 import ProdcutoEconomico from "./pages/ReportesPage";
@@ -51,11 +51,11 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<AppLayout />}>
 
-              <Route path="/" element={<Home />} />
+              {/* <Route path="/" element={<Home />} /> */}
               <Route path="/profile" element={<UserProfiles />} />
               <Route path="/Proveedores" element={<Proveedores />} />
-              <Route path="/productos" element={<ProductosPage />} />
-              <Route path="/Movimientos" element={<Movimientos />} />
+              <Route path="/" element={<ProductosPage />} />
+              {/* <Route path="/Movimientos" element={<Movimientos />} /> */}
               <Route path="/Reportes" element={<Reportes />} />
               <Route path="/ProdcutoEconomico" element={<ProdcutoEconomico />} />
               <Route path="/Inventario" element={<Inventario />} />

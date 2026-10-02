@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
+import logo from "../icons/logo1.png";
 
 // Assume these icons are imported from an icon library
 import {
@@ -25,41 +26,41 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
+  // {
+  //   icon: <GridIcon />,
+  //   name: "Dashboard",
+  //   path: "/",
+  // },
+  // {
+  //   icon: <UserCircleIcon />,
+  //   name: "Proveedores",
+  //   path: "/Proveedores",
+  // },
   {
-    icon: <GridIcon />,
-    name: "Dashboard",
+    icon: <BoxCubeIcon />,
+    name: "Alumnos",
     path: "/",
   },
-  {
-    icon: <UserCircleIcon />,
-    name: "Proveedores",
-    path: "/Proveedores",
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "Productos",
-    path: "/Productos",
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "Movimientos",
-    path: "/Movimientos",
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "Reportes",
-    path: "/Reportes",
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "Producto mas economico",
-    path: "/ProdcutoEconomico",
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "Inventario",
-    path: "/Inventario",
-  },
+  // {
+  //   icon: <BoxCubeIcon />,
+  //   name: "Movimientos",
+  //   path: "/Movimientos",
+  // },
+  // {
+  //   icon: <BoxCubeIcon />,
+  //   name: "Reportes",
+  //   path: "/Reportes",
+  // },
+  // {
+  //   icon: <BoxCubeIcon />,
+  //   name: "Producto mas economico",
+  //   path: "/ProdcutoEconomico",
+  // },
+  // {
+  //   icon: <BoxCubeIcon />,
+  //   name: "Inventario",
+  //   path: "/Inventario",
+  // },
 ];
 
 const AppSidebar: React.FC = () => {
@@ -242,8 +243,8 @@ const AppSidebar: React.FC = () => {
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
-                className="dark:hidden"
-                src="/images/logo/logo.svg"
+                className="dark:hidden ml-12"
+                src={logo}
                 alt="Logo"
                 width={150}
                 height={40}

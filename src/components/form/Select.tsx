@@ -8,11 +8,13 @@ interface Option {
 interface SelectProps {
   options: Option[];
   placeholder?: string;
-  onChange: (option: any) => void;
+  onChange: (option: Option | null) => void;
   className?: string;
   defaultValue?: Option | null;
+  value?: Option | null;
   isSearchable?: boolean;
   required?: boolean;
+  disabled?: boolean;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -20,8 +22,10 @@ const Select: React.FC<SelectProps> = ({
   placeholder = "Seleccione una opción",
   onChange,
   defaultValue = null,
+  value = null,
   isSearchable = true,
   required = false,
+  disabled = false,
 }) => {
   return (
     <ReactSelect
@@ -29,8 +33,10 @@ const Select: React.FC<SelectProps> = ({
       placeholder={placeholder}
       onChange={onChange}
       defaultValue={defaultValue}
+      value={value}
       isSearchable={isSearchable}
       required={required}
+      isDisabled={disabled}
       classNamePrefix="react-select"
       components={{
         IndicatorSeparator: () => null,
