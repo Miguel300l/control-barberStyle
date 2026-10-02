@@ -10,7 +10,7 @@ const INITIAL: AlumnoForm = {
   documento: "",
   celular: "",
   edad: "",
-  totalCurso: "",
+  totalCurso: "450000",
   abono: "",
   fecha: new Date().toISOString().split("T")[0],
   saldoPendiente: "",
