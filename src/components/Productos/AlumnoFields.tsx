@@ -80,11 +80,7 @@ export default function AlumnoFields({
         documento: alumno.documento,
         celular: alumno.celular,
         edad: String(alumno.edad),
-
-        fecha: new Date().toLocaleDateString("en-CA", {
-          timeZone: "America/Bogota",
-        }),
-
+        fecha: alumno.fecha,
         totalCurso: String(alumno.totalCurso),
 
         abono: "",
