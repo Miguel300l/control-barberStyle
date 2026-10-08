@@ -80,7 +80,9 @@ export default function AlumnoFields({
         documento: alumno.documento,
         celular: alumno.celular,
         edad: String(alumno.edad),
-        fecha: alumno.fecha,
+        fecha: alumno.fecha
+          ? alumno.fecha.split("T")[0]
+          : "",
         totalCurso: String(alumno.totalCurso),
 
         abono: "",
