@@ -12,7 +12,12 @@ const INITIAL: AlumnoForm = {
   edad: "",
   totalCurso: "450000",
   abono: "",
-  fecha: new Date().toISOString().split("T")[0],
+  fecha: new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Bogota",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date()),
   saldoPendiente: "",
 };
 

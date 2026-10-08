@@ -81,7 +81,9 @@ export default function AlumnoFields({
         celular: alumno.celular,
         edad: String(alumno.edad),
 
-        fecha: new Date().toISOString().split("T")[0],
+        fecha: new Date().toLocaleDateString("en-CA", {
+          timeZone: "America/Bogota",
+        }),
 
         totalCurso: String(alumno.totalCurso),
 
