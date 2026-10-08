@@ -81,7 +81,7 @@ export default function AlumnoFields({
         celular: alumno.celular,
         edad: String(alumno.edad),
         fecha: alumno.fecha
-          ? alumno.fecha.split("T")[0]
+          ? new Date(alumno.fecha).toISOString().slice(0, 10)
           : "",
         totalCurso: String(alumno.totalCurso),
 
